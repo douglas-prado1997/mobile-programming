@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">Painter</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">first_fragment_label</string>
+    <string name="save">Save</string>
+    <string name="clear">Clear</string>
+    <string name="register">Register</string>
+    <string name="name">name</string>
+    <string name="name_client">Name client</string>
+    <string name="is_budget">Is budget</string>
+    <string name="not_is_budget">Not is budget</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="discount">" Is it Discounted?"</string>
+    <string name="discarded_data">Discarded data</string>
+    <string name="no_valid_data">Invalid data</string>
+    <string name="house">House</string>
+    <string name="business">Business</string>
+    <string name="building">Building</string>
+    <string name="type">Type</string>
+    <string name="list">List</string>
+    <string name="value">Value</string>
+    <string name="about">About</string>
+    <string name="about_msg">" APP to control painting services"</string>
+    <string name="name_douglas" translatable="false">Douglas Prado</string>
+    <string name="Ra_douglas" translatable="false">RA: 2050781</string>
+    <string name="has_discount">It\'s discounted</string>
+    <string name="not_has_discount">It\'s not discounted</string>
+    <string name="add">Add</string>
+    <string name="dark_theme">dark theme</string>
+    <string name="clear_theme">Light theme</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="course">software engineering</string>
+
+</resources>

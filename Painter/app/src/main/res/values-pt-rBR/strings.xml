@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Painter</string>
+    <string name="first_fragment_label">Primeira Tela</string>
+    <string name="save">Salvar</string>
+    <string name="clear">Descartar</string>
+    <string name="register">Cadastrar</string>
+    <string name="name">Nome</string>
+    <string name="name_client">Nome do cliente</string>
+    <string name="is_budget">É um Orçamento</string>
+    <string name="not_is_budget">Não é um Orçamento</string>
+    <string name="no">Não</string>
+    <string name="yes">Sim</string>
+    <string name="discount">Está com Desconto ?</string>
+    <string name="discarded_data">Dados descartados</string>
+    <string name="no_valid_data">Dados Invalidos</string>
+    <string name="house">Casa</string>
+    <string name="business">Comercio</string>
+    <string name="building">Predio</string>
+    <string name="type">Tipo</string>
+    <string name="list">Lista</string>
+    <string name="value">Valor</string>
+    <string name="about">Sobre</string>
+    <string name="about_msg">APP para controle serviços de pintura</string>
+    <string name="has_discount">Está com desconto</string>
+    <string name="not_has_discount">Não está com desconto</string>
+    <string name="add">Adicionar</string>
+    <string name="dark_theme">Tema escuro</string>
+    <string name="clear_theme">Tema claro</string>
+    <string name="delete">Excluir</string>
+    <string name="edit">Editar</string>
+    <string name="course">engenharia de software</string>
+
+</resources>
