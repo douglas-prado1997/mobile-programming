@@ -19,11 +19,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.prado.painter.model.Service;
+import com.prado.painter.persistence.ServicesDatabase;
+
 import java.util.ArrayList;
 
 
 
-public class Register extends AppCompatActivity {
+public class RegisterService extends AppCompatActivity {
 
     private EditText editTextNameClient,has_value;
     private RadioGroup radioGroup;
@@ -43,19 +46,20 @@ public class Register extends AppCompatActivity {
     public static final String MODO = "MODO";
     public static final int NEW = 1;
     public static final int ALTER = 2;
+    private Service service;
 
 
 
     private int modo;
 
     public static void newService (AppCompatActivity activity){
-        Intent intent = new Intent(activity,Register.class);
+        Intent intent = new Intent(activity, RegisterService.class);
         intent.putExtra(MODO, NEW);
         activity.startActivityForResult(intent,NEW);
     }
 
-    public static void alterService (AppCompatActivity activity, Services service){
-        Intent intent = new Intent(activity, Register.class);
+    public static void alterService (AppCompatActivity activity, Service service){
+        Intent intent = new Intent(activity, RegisterService.class);
         intent.putExtra(MODO, ALTER);
 
 
@@ -180,22 +184,21 @@ public class Register extends AppCompatActivity {
                 }
 
                 String name = editTextNameClient.getText().toString();
-                String type = String.valueOf(spinnerType.getSelectedItemPosition());
+                int type = spinnerType.getSelectedItemPosition();
                 String  is_budget = is_budgets == 1 ? getString(R.string.is_budget) : getString(R.string.not_is_budget);
                 String discount = checkBox.isChecked() ? getString(R.string.has_discount) : getString(R.string.not_has_discount);
                 String value = has_value.getText().toString();
+                Float valueservice = Float.parseFloat(value);
 
+                service = new Service(name,valueservice,is_budget,discount,"0",type);
 
-                Intent intent = new Intent();
-                intent.putExtra(NAME, name);
-                intent.putExtra(VALUE, value);
-                intent.putExtra(IS_BUDGET, is_budget);
-                intent.putExtra(HAS_DISCOUNT, discount);
-                intent.putExtra(TYPE, type);
+                ServicesDatabase db = ServicesDatabase.getDatabase(this);
 
+                if (modo == NEW){
+                    db.ServicesDAO().insert(service);
+                }
 
-
-                setResult(Activity.RESULT_OK, intent);
+                setResult(Activity.RESULT_OK);
 
                 finish();
             }

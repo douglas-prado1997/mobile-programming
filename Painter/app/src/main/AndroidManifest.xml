@@ -11,8 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Painter"
         tools:targetApi="31">
-        <activity android:name=".About" android:exported="true" android:parentActivityName=".Main" />
-        <activity android:name=".Register" android:exported="true" android:parentActivityName=".Main"/>
+        <activity android:name=".AboutApp" android:exported="true" android:parentActivityName=".Main" />
+        <activity android:name=".RegisterService" android:exported="true" android:parentActivityName=".Main"/>
         <activity android:name=".Main" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -23,7 +23,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.prado.painter.model.Service;
+import com.prado.painter.persistence.ServicesDatabase;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends AppCompatActivity {
 
@@ -32,7 +36,7 @@ public class Main extends AppCompatActivity {
     //region init
 
     private ListView listViewServices;
-    private ArrayList<Services> services;
+    private List<Service> services;
     private ServicesAdapter serviceAdapter;
     private ActionMode actionMode;
     private int positionseleced = -1;
@@ -63,7 +67,7 @@ public class Main extends AppCompatActivity {
 
                         positionseleced = position;
 
-                        Services services1 = (Services) listViewServices.getItemAtPosition(position);
+                        Service services1 = (Service) listViewServices.getItemAtPosition(position);
 
                         Toast.makeText(getApplicationContext(),
                                 getString(R.string.name_client ) + (" ")+ services1.getNameClient() + (" Foi selecionado"),
@@ -92,7 +96,7 @@ public class Main extends AppCompatActivity {
                 }
 
                 );
-        prepareddata();
+        preparedata();
     }
 
 
@@ -148,22 +152,22 @@ public class Main extends AppCompatActivity {
 
 
     public void AddMenu (MenuItem item){
-        Intent intent = new Intent(this, Register.class);
-        Register.newService(this);
+        Intent intent = new Intent(this, RegisterService.class);
+        RegisterService.newService(this);
 
     }
 
     public void aboutMenu (MenuItem item){
-        Intent intent = new Intent(this, About.class);
+        Intent intent = new Intent(this, AboutApp.class);
 
         startActivity(intent);
     }
 
 
     public void alter (){
-        Services service = services.get(positionseleced);
+        Service service = services.get(positionseleced);
 
-        Register.alterService(this,service);
+        RegisterService.alterService(this,service);
     }
 
     public void deleteService(){
@@ -181,9 +185,11 @@ public class Main extends AppCompatActivity {
     //endregion
 
     //region common
-    private   void prepareddata(){
+    private   void preparedata(){
 
-        services = new ArrayList<>();
+        ServicesDatabase db = ServicesDatabase.getDatabase(this);
+
+        services = db.ServicesDAO().queryAll();
 
         serviceAdapter = new ServicesAdapter(this,services);
 
@@ -193,33 +199,10 @@ public class Main extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == Activity.RESULT_OK){
-            Bundle bundle = data.getExtras();
-            String name = bundle.getString(Register.NAME);
-            float value = Float.parseFloat(bundle.getString(Register.VALUE));
-            String is_budget = bundle.getString(Register.IS_BUDGET);
-            String discount = bundle.getString(Register.HAS_DISCOUNT);
-            int type = Integer.parseInt(bundle.getString(Register.TYPE));
 
+        if((requestCode == RegisterService.ALTER || requestCode == RegisterService.NEW) && resultCode == Activity.RESULT_OK)
+        preparedata();
 
-            if (requestCode == Register.ALTER){
-                Services service = services.get(positionseleced);
-                service.setNameClient(name);
-                service.setValue(value);
-                service.setIs_Budget(is_budget);
-                service.setHas_discount(discount);
-                service.setValue_discount("0");
-                service.setType(service.GetTypeById(type));
-                positionseleced = -1;
-
-            }else{
-
-                Services service = new Services(name,value,is_budget, discount, discount,type);
-                services.add(service);
-            }
-            serviceAdapter.notifyDataSetChanged();
-
-        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -285,12 +268,12 @@ public class Main extends AppCompatActivity {
 
     //region Button
     public void About(View view){
-        Intent intent = new Intent(this, About.class);
+        Intent intent = new Intent(this, AboutApp.class);
         startActivity(intent);
     }
 
     public void Add(View view){
-        Intent intent = new Intent(this, Register.class);
+        Intent intent = new Intent(this, RegisterService.class);
 
         startActivityForResult(intent, 1);
 

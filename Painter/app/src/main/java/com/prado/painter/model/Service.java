@@ -1,25 +1,39 @@
-package com.prado.painter;
+package com.prado.painter.model;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Services {
-    private static  int sequence = 0;
+import com.prado.painter.EType;
+@Entity
+public class Service {
+
+    @PrimaryKey(autoGenerate = true)
     private int id;
+    @NonNull
     String NameClient;
+    @NonNull
     float Value;
     String Is_Budget;
     String Has_discount;
     String Value_discount;
-    EType Type;
+    public EType Type;
 
-    public Services(String name,float value, String budget,String has_discount,String value_discount,int type) {
-        this.id = sequence++;
+    public Service(){
+
+    }
+
+    public Service(String name, float value, String budget, String has_discount, String value_discount, int type) {
+
         this.setNameClient(name);
         this.setValue(value);
         this.setIs_Budget(budget);
         this.setHas_discount(has_discount);
-        this.setValue_discount("0");
+        this.setValue_discount(value_discount);
         this.setType(GetTypeById(type));
+    }
 
-
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {

@@ -1,15 +1,13 @@
 package com.prado.painter;
 
-import static com.prado.painter.EType.building;
-import static com.prado.painter.EType.business;
-import static com.prado.painter.EType.house;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.prado.painter.model.Service;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -18,7 +16,7 @@ import java.util.Locale;
 public class ServicesAdapter extends BaseAdapter {
 
     private Context      context;
-    private List<Services> services;
+    private List<Service> services;
     private NumberFormat numberFormat;
 
     private static class ServiceHolder {
@@ -28,7 +26,7 @@ public class ServicesAdapter extends BaseAdapter {
         public TextView textViewdiscount;
     }
 
-    public ServicesAdapter(Context context, List<Services> services) {
+    public ServicesAdapter(Context context, List<Service> services) {
         this.context = context;
         this.services = services;
 
