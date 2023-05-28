@@ -171,10 +171,15 @@ public class Main extends AppCompatActivity {
     }
 
     public void deleteService(){
+        Service service = services.get(positionseleced);
+        ServicesDatabase db = ServicesDatabase.getDatabase(this);
+        db.ServicesDAO().delete(service);
         services.remove(positionseleced);
         serviceAdapter.notifyDataSetChanged();
 
     }
+
+
 
 
     @Override
