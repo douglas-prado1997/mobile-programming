@@ -22,7 +22,7 @@ public interface ServicesDAO {
     void update(Service service);
 
     @Query("SELECT * FROM service WHERE id = :id")
-    Service queryForId(long id);
+    Service queryForId(int id);
 
     @Query("SELECT * FROM service ")
     List<Service> queryAll();

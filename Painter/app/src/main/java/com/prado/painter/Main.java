@@ -205,9 +205,9 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if((requestCode == RegisterService.ALTER || requestCode == RegisterService.NEW) && resultCode == Activity.RESULT_OK)
-        preparedata();
-
+        if((requestCode == RegisterService.ALTER || requestCode == RegisterService.NEW) && resultCode == Activity.RESULT_OK){
+            preparedata();
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

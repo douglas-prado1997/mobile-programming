@@ -62,14 +62,7 @@ public class RegisterService extends AppCompatActivity {
         Intent intent = new Intent(activity, RegisterService.class);
         intent.putExtra(MODO, ALTER);
 
-
         intent.putExtra(ID, service.getId());
-        intent.putExtra(NAME, service.getNameClient());
-        intent.putExtra(VALUE, service.getValue());
-        intent.putExtra(IS_BUDGET, service.Is_Budget());
-        intent.putExtra(HAS_DISCOUNT, service.getValue());
-        intent.putExtra(TYPE, service.getType());
-
         activity.startActivityForResult(intent, ALTER);
     }
 
@@ -98,10 +91,16 @@ public class RegisterService extends AppCompatActivity {
             if(modo == NEW){
                 setTitle(getString(R.string.register));
             }else {
+                setTitle(getString(R.string.edit));
+                int id = bundle.getInt(ID);
+                ServicesDatabase db = ServicesDatabase.getDatabase(this);
+                service = db.ServicesDAO().queryForId(id);
                 RadioButton button;
-                String discount = bundle.getString(HAS_DISCOUNT);
-                String type = bundle.getString(TYPE);
-                String budget = bundle.getString(IS_BUDGET);
+                String trueDiscount = getString(R.string.has_discount);
+
+
+                String type = service.getType();
+                String budget = service.Is_Budget();
                 switch(type){
                     case "house":
                         spinnerType.setSelection(0);
@@ -114,9 +113,9 @@ public class RegisterService extends AppCompatActivity {
                         break;
 
                 }
-                editTextNameClient.setText(bundle.getString(NAME));
-                has_value.setText(String.valueOf(bundle.getFloat(VALUE)));
-                checkBox.setChecked(true);
+                editTextNameClient.setText(service.getNameClient());
+                has_value.setText(String.valueOf(service.getValue()));
+                checkBox.setChecked(service.getHas_discount() == trueDiscount ? true : false);
                 if (budget.equals(getString(R.string.is_budget))) {
                     button = findViewById(R.id.yes);
                     button.setChecked(true);
@@ -125,8 +124,6 @@ public class RegisterService extends AppCompatActivity {
                     button = findViewById(R.id.no);
                     button.setChecked(true);
                 }
-
-                setTitle(getString(R.string.edit));
             }
         }
     }
@@ -143,17 +140,6 @@ public class RegisterService extends AppCompatActivity {
                         list);
 
         spinnerType.setAdapter(adapter);
-    }
-
-    public void clearfields(View view) {
-        editTextNameClient.setText(null);
-        radioGroup.clearCheck();
-        checkBox.setChecked(false);
-        has_value.setText(null);
-        Toast.makeText(this,
-                R.string.discarded_data,
-                Toast.LENGTH_LONG).show();
-        editTextNameClient.requestFocus();
     }
 
 
@@ -190,12 +176,20 @@ public class RegisterService extends AppCompatActivity {
                 String value = has_value.getText().toString();
                 Float valueservice = Float.parseFloat(value);
 
-                service = new Service(name,valueservice,is_budget,discount,"0",type);
 
                 ServicesDatabase db = ServicesDatabase.getDatabase(this);
 
                 if (modo == NEW){
+                    service = new Service(name,valueservice,is_budget,discount,"0",type);
                     db.ServicesDAO().insert(service);
+                }
+                else{
+                    service.setNameClient(name);
+                    service.setType(service.GetTypeById(type));
+                    service.setValue(valueservice);
+                    service.setHas_discount(discount);
+                    service.setIs_Budget(is_budget);
+                    db.ServicesDAO().update(service);
                 }
 
                 setResult(Activity.RESULT_OK);
@@ -215,46 +209,6 @@ public class RegisterService extends AppCompatActivity {
         editTextNameClient.requestFocus();
     }
 
-
-    public void viewdata(View view) {
-        if(!isvalid()){
-            Toast.makeText(this,
-                    R.string.no_valid_data,
-                    Toast.LENGTH_LONG).show();
-        }
-        else  {
-            int is_budgets = 0;
-            switch(radioGroup.getCheckedRadioButtonId()) {
-                case R.id.yes:
-                    is_budgets = 1;
-                    break;
-
-                case R.id.no:
-                    is_budgets = 0;
-                    break;
-            }
-
-            String name = editTextNameClient.getText().toString();
-            String type = String.valueOf(spinnerType.getSelectedItemPosition());
-            String  is_budget = is_budgets == 1 ? getString(R.string.is_budget) : getString(R.string.not_is_budget);
-            String discount = checkBox.isChecked() ? getString(R.string.has_discount) : getString(R.string.not_has_discount);
-            String value = has_value.getText().toString();
-
-
-            Intent intent = new Intent();
-            intent.putExtra(NAME, name);
-            intent.putExtra(VALUE, value);
-            intent.putExtra(IS_BUDGET, is_budget);
-            intent.putExtra(HAS_DISCOUNT, discount);
-            intent.putExtra(TYPE, type);
-
-
-
-            setResult(Activity.RESULT_OK, intent);
-
-            finish();
-        }
-    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
