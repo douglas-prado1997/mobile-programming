@@ -7,7 +7,9 @@ import android.annotation.SuppressLint;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.view.ActionMode;
 
@@ -30,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends AppCompatActivity {
-
 
 
     //region init
@@ -70,7 +71,7 @@ public class Main extends AppCompatActivity {
                         Service services1 = (Service) listViewServices.getItemAtPosition(position);
 
                         Toast.makeText(getApplicationContext(),
-                                getString(R.string.name_client ) + (" ")+ services1.getNameClient() + (" Foi selecionado"),
+                                getString(R.string.name_client) + (" ") + services1.getNameClient() + (" Foi selecionado"),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -82,7 +83,7 @@ public class Main extends AppCompatActivity {
                 new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
-                        if(actionMode !=null){
+                        if (actionMode != null) {
                             return false;
                         }
                         positionseleced = position;
@@ -95,7 +96,7 @@ public class Main extends AppCompatActivity {
                     }
                 }
 
-                );
+        );
         preparedata();
     }
 
@@ -108,7 +109,7 @@ public class Main extends AppCompatActivity {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             MenuInflater inflate = mode.getMenuInflater();
-            inflate.inflate(R.menu.selected_item,menu);
+            inflate.inflate(R.menu.selected_item, menu);
             return true;
         }
 
@@ -120,7 +121,7 @@ public class Main extends AppCompatActivity {
         @Override
         public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
 
-            switch (menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
 
                 case R.id.menuItemEdit:
                     alter();
@@ -140,7 +141,7 @@ public class Main extends AppCompatActivity {
         @Override
         public void onDestroyActionMode(ActionMode mode) {
 
-            if (viewSelecionada != null){
+            if (viewSelecionada != null) {
                 viewSelecionada.setBackgroundColor(Color.TRANSPARENT);
             }
             actionMode = null;
@@ -151,35 +152,46 @@ public class Main extends AppCompatActivity {
     };
 
 
-    public void AddMenu (MenuItem item){
+    public void AddMenu(MenuItem item) {
         Intent intent = new Intent(this, RegisterService.class);
         RegisterService.newService(this);
 
     }
 
-    public void aboutMenu (MenuItem item){
+    public void aboutMenu(MenuItem item) {
         Intent intent = new Intent(this, AboutApp.class);
 
         startActivity(intent);
     }
 
 
-    public void alter (){
+    public void alter() {
         Service service = services.get(positionseleced);
 
-        RegisterService.alterService(this,service);
+        RegisterService.alterService(this, service);
     }
 
-    public void deleteService(){
-        Service service = services.get(positionseleced);
-        ServicesDatabase db = ServicesDatabase.getDatabase(this);
-        db.ServicesDAO().delete(service);
-        services.remove(positionseleced);
-        serviceAdapter.notifyDataSetChanged();
+    public void deleteService() {
+        String msgAlert = getString(R.string.msgAlert);
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        Service service = services.get(positionseleced);
+                        ServicesDatabase db = ServicesDatabase.getDatabase(Main.this);
+                        db.ServicesDAO().delete(service);
 
+                        services.remove(positionseleced);
+                        serviceAdapter.notifyDataSetChanged();
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+        ConfirmationAlert(this,msgAlert,listener);
     }
-
-
 
 
     @Override
@@ -190,13 +202,13 @@ public class Main extends AppCompatActivity {
     //endregion
 
     //region common
-    private   void preparedata(){
+    private void preparedata() {
 
         ServicesDatabase db = ServicesDatabase.getDatabase(this);
 
         services = db.ServicesDAO().queryAll();
 
-        serviceAdapter = new ServicesAdapter(this,services);
+        serviceAdapter = new ServicesAdapter(this, services);
 
         listViewServices.setAdapter(serviceAdapter);
 
@@ -205,14 +217,14 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if((requestCode == RegisterService.ALTER || requestCode == RegisterService.NEW) && resultCode == Activity.RESULT_OK){
+        if ((requestCode == RegisterService.ALTER || requestCode == RegisterService.NEW) && resultCode == Activity.RESULT_OK) {
             preparedata();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
 
-    public void savePreferenceTheme(int novoTema){
+    public void savePreferenceTheme(int novoTema) {
         SharedPreferences shared = getSharedPreferences(File, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = shared.edit();
 
@@ -223,7 +235,7 @@ public class Main extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(themeApp);
     }
 
-    public void  verificationTheme (){
+    public void verificationTheme() {
         SharedPreferences shared = getSharedPreferences(File, Context.MODE_PRIVATE);
         themeApp = shared.getInt(themechoice, themeApp);
 
@@ -233,7 +245,7 @@ public class Main extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
 
             case R.id.menuItemDark:
                 savePreferenceTheme(AppCompatDelegate.MODE_NIGHT_YES);
@@ -252,7 +264,7 @@ public class Main extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         MenuItem item;
-        switch (themeApp){
+        switch (themeApp) {
 
             case AppCompatDelegate.MODE_NIGHT_YES:
                 item = menu.findItem(R.id.menuItemDark);
@@ -268,6 +280,23 @@ public class Main extends AppCompatActivity {
         item.setChecked(true);
         return true;
     }
+
+    public void ConfirmationAlert(Context contexto, String mensagem, DialogInterface.OnClickListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(contexto);
+
+        builder.setTitle(R.string.Confirmation);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+        builder.setMessage(mensagem);
+
+        builder.setPositiveButton(R.string.yes, listener);
+        builder.setNegativeButton(R.string.no, listener);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
 
     //endregion
 

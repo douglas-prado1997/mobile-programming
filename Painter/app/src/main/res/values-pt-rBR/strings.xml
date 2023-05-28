@@ -30,5 +30,7 @@
     <string name="delete">Excluir</string>
     <string name="edit">Editar</string>
     <string name="course">engenharia de software</string>
+    <string name="Confirmation">confirmacao</string>
+    <string name="msgAlert">Deseja excluir este serviço?</string>
 
 </resources>
