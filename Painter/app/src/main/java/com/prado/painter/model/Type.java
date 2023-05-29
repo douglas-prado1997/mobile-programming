@@ -3,26 +3,28 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.prado.painter.EType;
 
 @Entity
 public class Type {
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private  int id;
     @NonNull
     String Name;
+
+    public Type() {
+
+    }
 
 
     public Type(String name) {
     this.setName(name);
-
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getId() {
+    public  int getId() {
         return id;
     }
 

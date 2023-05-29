@@ -32,5 +32,8 @@
     <string name="course">engenharia de software</string>
     <string name="Confirmation">confirmacao</string>
     <string name="msgAlert">Deseja excluir este serviço?</string>
+    <string name="types">Tipos</string>
+    <string name="notfound">Não está disponível no momento</string>
+    <string name="Notice">Aviso</string>
 
 </resources>

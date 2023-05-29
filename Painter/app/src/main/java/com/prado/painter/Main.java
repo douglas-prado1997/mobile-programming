@@ -281,18 +281,29 @@ public class Main extends AppCompatActivity {
         return true;
     }
 
-    public void ConfirmationAlert(Context contexto, String mensagem, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(contexto);
+    public void ConfirmationAlert(Context context, String msg, DialogInterface.OnClickListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         builder.setTitle(R.string.Confirmation);
         builder.setIcon(android.R.drawable.ic_dialog_alert);
 
-        builder.setMessage(mensagem);
+        builder.setMessage(msg);
 
         builder.setPositiveButton(R.string.yes, listener);
         builder.setNegativeButton(R.string.no, listener);
 
         AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+
+    public void notavailable(MenuItem item){
+        AlertDialog.Builder alert = new AlertDialog.Builder(Main.this);
+        alert.setIcon(android.R.drawable.ic_dialog_alert);
+        alert.setTitle(R.string.Notice);
+        alert.setMessage(R.string.notfound);
+        alert.setPositiveButton(R.string.ok,null);
         alert.show();
     }
 

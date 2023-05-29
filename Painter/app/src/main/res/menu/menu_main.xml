@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
@@ -12,6 +13,9 @@
         android:id="@+id/menuItemAbout"
         android:onClick="aboutMenu"
         android:title="@string/about" />
+    <item
+        android:onClick="notavailable"
+        android:title="@string/types" />
     <group
         android:id="@+id/grupoTema"
         android:checkableBehavior="single">

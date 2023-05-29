@@ -7,11 +7,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.prado.painter.model.Service;
+import com.prado.painter.model.Type;
 
 
-@Database(entities = {Service.class}, version = 1,exportSchema = false)
+@Database(entities = {Service.class, Type.class}, version = 1,exportSchema = false)
 public abstract class ServicesDatabase extends RoomDatabase {
     public abstract ServicesDAO ServicesDAO();
+    public abstract TypeDao TypeDao();
+
 
     private static ServicesDatabase instance;
 
@@ -27,4 +30,5 @@ public abstract class ServicesDatabase extends RoomDatabase {
         }
         return instance;
     }
+
 }
